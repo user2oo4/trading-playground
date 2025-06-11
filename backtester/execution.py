@@ -1,9 +1,12 @@
 # Receive orders from the strategy
 # Execute and generate order fills
 # Update portfolio with order fills
-from order import Order
-from order_fill import OrderFill
-from portfolio import Portfolio
+import os
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import sys
+sys.path.append(REPO_DIR)
+
+from backtester.order_fill import OrderFill
 
 class Execution:
     def __init__(self, slippage=0.0, fee_per_trade=0.0):

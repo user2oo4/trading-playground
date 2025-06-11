@@ -1,11 +1,10 @@
 # Run backtester, can be used when actually having strategies
-from run import Backtester
-from strategy_interface import Strategy
-from data_loader import load_data
 import os
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import sys
+sys.path.append(REPO_DIR)
 
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_DIR = os.path.dirname(CURRENT_DIR)
+from backtester.run import Backtester
 
 # from strategies.<strategy_name> import <Strategy> 
 # data_path = os.path.join(REPO_DIR, 'backtester', 'data', 'data_2020-01-01_2023-01-01.csv')

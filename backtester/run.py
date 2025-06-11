@@ -1,7 +1,12 @@
-from order import Order
-from order_fill import OrderFill
-from portfolio import Portfolio
-from execution import Execution
+import os
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import sys
+sys.path.append(REPO_DIR)
+
+from backtester.order import Order
+from backtester.order_fill import OrderFill
+from backtester.portfolio import Portfolio
+from backtester.execution import Execution
 import pandas as pd
 from pathlib import Path
 

@@ -1,4 +1,9 @@
-from order_fill import OrderFill
+import os
+REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import sys
+sys.path.append(REPO_DIR)
+
+from backtester.order_fill import OrderFill
 
 class Portfolio:
     def __init__(self, initial_balance):

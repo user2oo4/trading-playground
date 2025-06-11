@@ -1,6 +1,5 @@
 # This is a generic interface for strategies in the strategy folder.
 from abc import ABC, abstractmethod
-from order import Order
 class StrategyInterface(ABC):
     @abstractmethod
     def generate_signals(self, timestamp, market_data):
