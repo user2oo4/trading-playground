@@ -1,5 +1,7 @@
+from typing import Literal
+
 class OrderFill:
-    def __init__(self, symbol, side, quantity, fill_price, fee=0.0):
+    def __init__(self, symbol: str, side: Literal['BUY', 'SELL'], quantity: int, fill_price: float, fee: float=0.0):
         self.symbol = symbol
         self.side = side.upper()
         self.quantity = quantity

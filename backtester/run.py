@@ -18,27 +18,31 @@ class Backtester:
         data = pd.read_csv(data_path, parse_dates=True, index_col='Date')
         return data
 
-    def __init__(self, strategy, data_path, initial_balance=100000, slippage=0.001, fee_per_trade=1.0):
+    def __init__(self, strategy, market_data, initial_balance=100000, slippage=0.001, fee_per_trade=1.0):
         self.strategy = strategy
-        self.market_data = self.load_csv_data(data_path)
-        self.dates = self.market_data.index
+        self.market_data = market_data
+        symbols = list(market_data.keys())
+        self.dates = market_data[symbols[0]].index
         self.portfolio = Portfolio(initial_balance)
         self.execution = Execution(slippage, fee_per_trade)
         self.metrics = []
     
     def run(self):
         for date in self.dates:
-            daily_data = self.market_data.loc[date]
-            # get orders from strategy
-            orders = self.strategy.generate_orders(daily_data, self.portfolio)
+            # cut market data to current date
+            # market data is dict (key: symbol, value: DataFrame)
+            current_market_data = {symbol: df.loc[:date] for symbol, df in self.market_data.items()}
+            orders = self.strategy.generate_signals(date, market_data=current_market_data)
             if not orders:
                 continue
             # execute orders
-            fills = self.execution.execute_order(orders, daily_data)
+            fills = self.execution.execute_order(orders, market_data=current_market_data)
+            if not fills:
+                continue
             # update portfolio with fills
             self.portfolio.update(fills)
             # calculate metrics
-            total_value = self.portfolio.get_total_value(self.market_data)
+            total_value = self.portfolio.get_total_value(current_market_data)
             self.metrics.append({
                 'date': date,
                 'balance': self.portfolio.balance,

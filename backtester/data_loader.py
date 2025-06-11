@@ -35,9 +35,22 @@ def load_data(symbols, start_date, end_date):
     print(f"Data loaded for symbols: {', '.join(symbols)}")
     return data
 
+def sp500_symbols():
+    wikipedia_url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+    df = pd.read_html(wikipedia_url)[0]
+    symbols = df['Symbol'].tolist()
+    return symbols
+
 def print_to_csv(data, filename):
     with open(filename, 'w') as f:
         for symbol, df in data.items():
             df.to_csv(f, header=True if symbol == list(data.keys())[0] else False)
             f.write("\n")
     print(f"Data saved to {filename}")
+
+if __name__ == "__main__":
+    # symbols = sp500_symbols()
+    symbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA'] 
+    start_date = '2022-01-01'
+    end_date = '2023-01-01'
+    load_data(symbols, start_date, end_date)

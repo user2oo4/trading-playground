@@ -6,6 +6,8 @@ REPO_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 import sys
 sys.path.append(REPO_DIR)
 
+import pandas as pd
+
 from backtester.order_fill import OrderFill
 
 class Execution:
@@ -20,7 +22,11 @@ class Execution:
             symbol = order.symbol
             side = order.side
             quantity = order.quantity
-            price = market_data[symbol]['Close'][-1]
+            price = market_data[symbol]['Close'].iloc[-1]
+            if isinstance(price, pd.core.series.Series):
+                price = float(price.iloc[0])
+            print("price = ", price)
+            print("type price = ", type(price))
             if order.order_type == 'market':
                 fill_price = price * (1 + self.slippage) if side == 'BUY' else price * (1 - self.slippage)
             elif order.order_type == 'limit':
